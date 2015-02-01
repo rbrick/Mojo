@@ -20,7 +20,7 @@ public class BukkitNebulaCommand extends Command {
     public BukkitNebulaCommand(String name, String description, String usageMessage, List<String> aliases, Method method) {
         super(name, description, usageMessage, aliases);
          command = new NebulaCommand(name, (String[]) aliases.toArray(), usageMessage, description, method);
-        if(command.getPermission() != null) {
+        if(command.getPermission() != null && !command.getPermission().isEmpty()) {
             this.setPermission(command.getPermission());
         }
         if(command.getPermMessage() != null) {
