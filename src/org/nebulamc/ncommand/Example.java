@@ -3,6 +3,7 @@ package org.nebulamc.ncommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.nebulamc.ncommand.annotations.Command;
+import org.nebulamc.ncommand.annotations.Permission;
 import org.nebulamc.ncommand.command.CommandContext;
 import org.nebulamc.ncommand.impl.bukkit.BukkitRegister;
 
@@ -23,6 +24,7 @@ public class Example extends JavaPlugin {
     }
 
     @Command(name = "example", aliases = "chickenbutt")
+    @Permission("*")
     public static void example(CommandContext cmd) {
        List args = cmd.getArguments();
        CommandSender sender = (CommandSender) cmd.getSender();
@@ -35,7 +37,7 @@ public class Example extends JavaPlugin {
     }
 
     @Command(name = "example subcommand", aliases = "chickenbutt subcommand")
-    public static void examples(CommandContext cmd) {
+    public static void examples(CommandContext cmd, int amount) {
         List args = cmd.getArguments();
         CommandSender sender = (CommandSender) cmd.getSender();
 
