@@ -30,6 +30,7 @@ public class BukkitNebulaCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String s, String[] strings) {
         BukkitCommandContext context = new BukkitCommandContext(sender, Arrays.asList(strings));
+
         command.execute(context);
         return false;
     }

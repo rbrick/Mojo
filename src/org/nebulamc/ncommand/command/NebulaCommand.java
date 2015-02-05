@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 /**
@@ -20,7 +21,7 @@ public class NebulaCommand {
     @Nullable String desc;
     @Nullable String permmessage;
     Method m;
-    Object[] resolvedParameters;
+
 
     public NebulaCommand(String name, String[] aliases,String usage, String desc, Method m) {
         this(name, aliases,usage,desc,"",m);
@@ -36,9 +37,9 @@ public class NebulaCommand {
          m.setAccessible(true);
     }
 
-    public void execute(CommandContext cmd) {
+    public void execute(CommandContext<?> cmd) {
         try {
-            m.invoke(null, cmd, resolvedParameters);
+            m.invoke(null, cmd);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -82,9 +83,6 @@ public class NebulaCommand {
         return aliases;
     }
 
-    public void setResolvedParameters(Object[] resolvedParameters) {
-        this.resolvedParameters = resolvedParameters;
-    }
 
 
 

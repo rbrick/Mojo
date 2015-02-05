@@ -17,7 +17,6 @@ public class CommandBuilder {
     Command _command;
     @Nullable Permission _perm;
     Method _m;
-    Object[] params;
 
     public CommandBuilder(Command command, Method m) {
         this(command, null, m);
