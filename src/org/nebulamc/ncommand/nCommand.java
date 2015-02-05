@@ -5,6 +5,6 @@ package org.nebulamc.ncommand;
  * <p/>
  * Project: nCommand
  */
-public class nCommand {
+public class nCommand  {
     // This is a dummy class. huehuehue
 }

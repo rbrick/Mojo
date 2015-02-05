@@ -19,6 +19,7 @@ public class NebulaCommand {
     @Nullable String desc;
     @Nullable String permmessage;
     Method m;
+    Object[] resolvedParameters;
 
     public NebulaCommand(String name, String[] aliases,String usage, String desc, Method m) {
         this(name, aliases,usage,desc,"",m);
@@ -79,5 +80,10 @@ public class NebulaCommand {
     public String[] getAliases() {
         return aliases;
     }
+
+
+
+
+
 
 }

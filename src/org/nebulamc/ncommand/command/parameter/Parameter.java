@@ -7,11 +7,11 @@ import java.lang.reflect.Type;
  * <p/>
  * Project: nCommand
  */
-public class Parameter<T> {
+public class Parameter {
 
     String name;
     Type type;
-    T value = null;
+    Object value = null;
 
     public Parameter(String name, Type type) {
         this.name = name;
@@ -26,7 +26,7 @@ public class Parameter<T> {
         return type;
     }
 
-    public T attemptParse(String input) throws ParameterParseException{
+    public Object attemptParse(String input) throws ParameterParseException{
        try {
 
        } catch (Throwable throwable) {
