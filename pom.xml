@@ -21,4 +21,16 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>deployment</id>
+            <name>NebulaMC Releases</name>
+            <url>http://repo.nebulamc.org/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>deployment</id>
+            <name>NebulaMC Snapshots</name>
+            <url>http://repo.nebulamc.org/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

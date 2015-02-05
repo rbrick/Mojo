@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * Created by Ryan on 1/31/2015
@@ -37,7 +38,7 @@ public class NebulaCommand {
 
     public void execute(CommandContext cmd) {
         try {
-            m.invoke(null, cmd);
+            m.invoke(null, cmd, resolvedParameters);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -81,6 +82,9 @@ public class NebulaCommand {
         return aliases;
     }
 
+    public void setResolvedParameters(Object[] resolvedParameters) {
+        this.resolvedParameters = resolvedParameters;
+    }
 
 
 
