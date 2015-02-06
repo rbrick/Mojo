@@ -6,5 +6,5 @@ package org.nebulamc.ncommand.command.parameter;
  * Project: nCommand
  */
 public interface ParameterResolver<T> {
-    T resolveType(Class<T> clzz, String input);
+    T resolveType(String input);
 }
