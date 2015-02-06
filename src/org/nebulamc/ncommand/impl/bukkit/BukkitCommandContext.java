@@ -1,5 +1,6 @@
 package org.nebulamc.ncommand.impl.bukkit;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.nebulamc.ncommand.command.CommandContext;
 
@@ -30,5 +31,8 @@ public class BukkitCommandContext<S extends CommandSender> implements CommandCon
         return sender;
     }
 
-
+    @Override
+    public void respond(String message) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+    }
 }

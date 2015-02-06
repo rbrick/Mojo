@@ -1,6 +1,7 @@
 package org.nebulamc.ncommand.impl.bungeecord;
 
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.nebulamc.ncommand.command.CommandContext;
 
 import java.util.List;
@@ -29,5 +30,10 @@ public class BungeeCommandContext<S extends CommandSender> implements CommandCon
     @Override
     public CommandSender getSender() {
         return sender;
+    }
+
+    @Override
+    public void respond(String message) {
+        sender.sendMessage(TextComponent.fromLegacyText(message));
     }
 }

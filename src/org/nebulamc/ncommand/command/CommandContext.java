@@ -13,4 +13,5 @@ public interface CommandContext<S> {
 
     S getSender();
 
+    void respond(String message);
 }
