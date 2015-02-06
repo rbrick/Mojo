@@ -1,6 +1,7 @@
 package org.nebulamc.ncommand.command;
 
 import com.sun.istack.internal.Nullable;
+import org.nebulamc.ncommand.annotations.Todo;
 import org.nebulamc.ncommand.command.parameter.ParameterResolver;
 import org.nebulamc.ncommand.command.parameter.ParametricRegistry;
 
@@ -47,14 +48,11 @@ public class NebulaCommand {
 
     public void execute(CommandContext<?> cmd) {
         try {
-            Object[] params = resolve(cmd);
-            m.invoke(null, cmd, params);
+            m.invoke(null, cmd);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-        } catch (CommandParseException ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -95,6 +93,8 @@ public class NebulaCommand {
     }
 
 
+
+    @Todo("Fix the NPEs and errors with ParametricRegistry")
     private Object[] resolve(CommandContext<?> args) throws CommandParseException {
         if (m.getParameterTypes().length > 1) {
             if (args.getArguments().size() < (m.getParameterTypes().length - 1)) {
