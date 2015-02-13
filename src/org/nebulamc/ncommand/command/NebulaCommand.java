@@ -27,6 +27,8 @@ public class NebulaCommand {
     @Nullable
     String permmessage;
     Method m;
+    boolean isStatic = true;
+
 
     ParametricRegistry registry = new ParametricRegistry();
 
@@ -48,9 +50,14 @@ public class NebulaCommand {
     public void execute(CommandContext<?> cmd) {
         try {
             Object[] parameters = resolve(cmd);
-            m.invoke(null, parameters);
-        } catch (IllegalAccessException | InvocationTargetException | CommandParseException e) {
+            if (isStatic) {
+                m.invoke(null, parameters);
+            } else {
+               m.invoke(m.getClass().newInstance(), parameters);
+            }
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException | CommandParseException e) {
             e.printStackTrace();
+            cmd.respond("§cAn error occurred executing invoking the method!");
         }
     }
 
@@ -90,7 +97,9 @@ public class NebulaCommand {
         return aliases;
     }
 
-
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
 
     private Object[] resolve(CommandContext<?> arguments) throws CommandParseException {
         List<Object> obj = new ArrayList<>();
