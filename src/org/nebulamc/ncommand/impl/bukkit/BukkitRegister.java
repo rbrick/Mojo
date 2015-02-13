@@ -39,4 +39,5 @@ public class BukkitRegister implements Register {
               register(clazz);
          }
     }
+
 }

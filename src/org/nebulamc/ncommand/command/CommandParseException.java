@@ -7,8 +7,9 @@ package org.nebulamc.ncommand.command;
  */
 public class CommandParseException extends Exception {
 
-    public CommandParseException(String message) {
+    public CommandParseException(String message, CommandContext<?> cmd) {
         super(message);
+        cmd.respond("§c" + message); // send the sender
     }
 
 }

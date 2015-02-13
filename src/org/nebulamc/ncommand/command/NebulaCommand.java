@@ -1,14 +1,13 @@
 package org.nebulamc.ncommand.command;
 
 import com.sun.istack.internal.Nullable;
-import org.nebulamc.ncommand.annotations.Todo;
 import org.nebulamc.ncommand.command.parameter.ParameterResolver;
 import org.nebulamc.ncommand.command.parameter.ParametricRegistry;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ryan on 1/31/2015
@@ -48,10 +47,9 @@ public class NebulaCommand {
 
     public void execute(CommandContext<?> cmd) {
         try {
-            m.invoke(null, cmd);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+            Object[] parameters = resolve(cmd);
+            m.invoke(null, parameters);
+        } catch (IllegalAccessException | InvocationTargetException | CommandParseException e) {
             e.printStackTrace();
         }
     }
@@ -94,31 +92,28 @@ public class NebulaCommand {
 
 
 
-    @Todo("Fix the NPEs and errors with ParametricRegistry")
-    private Object[] resolve(CommandContext<?> args) throws CommandParseException {
+    private Object[] resolve(CommandContext<?> arguments) throws CommandParseException {
+        List<Object> obj = new ArrayList<>();
+        obj.add(arguments);
         if (m.getParameterTypes().length > 1) {
-            if (args.getArguments().size() < (m.getParameterTypes().length - 1)) {
-                throw new CommandParseException("Argument length does not match method length!");
+            if (arguments.getArguments().size() != (m.getParameterTypes().length - 1)) {
+                throw new CommandParseException("Argument length does not match method length!", arguments);
             }
-            Object[] obj = new Object[m.getParameterTypes().length - 1];
+
             for (int i = 1; i < m.getParameterTypes().length; i++) {
-                Type type = m.getParameterTypes()[i];
-                if (registry.get(type) == null) {
-                    throw new CommandParseException("Could not find resolver for " + type.getClass().getSimpleName());
+                Class<?> type = m.getParameterTypes()[i];
+                int argsIndex = i - 1;
+                if (!registry.getResolvedTypes().containsKey(type)) {
+                    throw new CommandParseException("Could not find resolver for " + type.getSimpleName(), arguments);
                 } else {
                     ParameterResolver<?> typeResolver = registry.get(type);
-                    try {
-                        Object o = typeResolver.resolveType(args.getArguments().get(i));
-                        obj[i - 1] = o;
-                    } catch (Throwable throwable) {
-                        throw new CommandParseException("Type mismatch");
-                    }
+                    Object o = type.cast(typeResolver.resolveType(arguments.getArguments().get(argsIndex)));
+                    obj.add(o);
+                    System.out.println("Type: " + type.getSimpleName() + ", Object Type: " + o.getClass().getSimpleName());
                 }
             }
-            return obj;
-        } else {
-            return null;
         }
+        return obj.toArray();
     }
 
 }

@@ -1,6 +1,7 @@
 package org.nebulamc.ncommand.command.parameter;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Hashtable;
  */
 public class ParametricRegistry {
 
-    Hashtable<Type, ParameterResolver<?>> resolvedTypes = new Hashtable<Type, ParameterResolver<?>>();
+    HashMap<Type, ParameterResolver<?>> resolvedTypes = new HashMap<Type, ParameterResolver<?>>();
 
     public ParametricRegistry() {
         addDefaults();
@@ -21,7 +22,7 @@ public class ParametricRegistry {
     }
 
     public ParameterResolver<?> get(Type type) {
-        if (resolvedTypes.contains(type)) {
+        if (resolvedTypes.containsKey(type)) {
             return resolvedTypes.get(type);
         }
         return null;
@@ -29,21 +30,21 @@ public class ParametricRegistry {
 
     // Populates the table with default resolvers.
     public void addDefaults() {
-        addResolver(Boolean.TYPE, new ParameterResolver<Boolean>() {
+        addResolver(Boolean.class, new ParameterResolver<Boolean>() {
             @Override
             public Boolean resolveType(String input) {
                 return Boolean.parseBoolean(input);
             }
         });
 
-        addResolver(Integer.TYPE, new ParameterResolver<Integer>() {
+        addResolver(Integer.class, new ParameterResolver<Integer>() {
             @Override
             public Integer resolveType(String input) {
                 return Integer.parseInt(input);
             }
         });
 
-        addResolver(Double.TYPE, new ParameterResolver<Double>() {
+        addResolver(Double.class, new ParameterResolver<Double>() {
             @Override
             public Double resolveType(String input) {
                 return Double.parseDouble(input);
@@ -51,4 +52,7 @@ public class ParametricRegistry {
         });
     }
 
+    public HashMap<Type, ParameterResolver<?>> getResolvedTypes() {
+        return resolvedTypes;
+    }
 }
