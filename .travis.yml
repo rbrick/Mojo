@@ -1,0 +1,4 @@
+# The language is java
+language: java
+
+install: "mvn clean install deploy"
