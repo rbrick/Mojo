@@ -30,19 +30,12 @@ public class CommandBuilder {
         } else if(!m.getParameterTypes()[0].isAssignableFrom(CommandContext.class)) {
             throw new IllegalArgumentException("First argument must be assignable from CommandContext.class");
         } else if(!Modifier.isStatic(m.getModifiers())) {
-            isStatic = false;
+            this.isStatic = false;
         }
         this._command = command;
         this._m = m;
         this._perm = perm;
     }
-
-
-
-
-
-
-
 
     public NebulaCommand build() {
         if(_perm == null) {
@@ -51,12 +44,10 @@ public class CommandBuilder {
             return nc;
         } else {
             NebulaCommand nc = new NebulaCommand(_command.name(), _command.aliases(), _command.usage(), _perm.value(), _m);
+            nc.setPermission(_perm.value());
             nc.setPermMessage(_perm.message());
             nc.setStatic(isStatic);
             return nc;
         }
     }
-
-
-
 }

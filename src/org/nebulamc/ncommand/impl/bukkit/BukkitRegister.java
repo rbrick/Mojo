@@ -19,25 +19,30 @@ public class BukkitRegister implements Register {
 
     @Override
     public void register(Class<?> clz) {
-       for (Method method : clz.getMethods()) {
+        for (Method method : clz.getMethods()) {
             if(method.isAnnotationPresent(Command.class)) {
                 Command cmd = method.getAnnotation(Command.class);
-                Permission perm = null;
+
                 if(method.isAnnotationPresent(Permission.class)) {
-                    perm = method.getAnnotation(Permission.class);
+                    Permission perm = method.getAnnotation(Permission.class);
+                    CommandBuilder builder = new CommandBuilder(cmd, perm, method);
+                    BukkitNebulaCommand cmds = BukkitNebulaCommand.fromNebulaCommand(builder.build());
+                    map.register(cmd.name(), cmds);
+                    continue;
                 }
-                CommandBuilder builder = new CommandBuilder(cmd, perm, method);
+                CommandBuilder builder = new CommandBuilder(cmd, method);
                 BukkitNebulaCommand cmds = BukkitNebulaCommand.fromNebulaCommand(builder.build());
+                System.out.println(cmds.getPermission());
                 map.register(cmd.name(), cmds);
             }
-       }
+        }
     }
 
     @Override
     public void registerAll(List<Class<?>> classes) {
-         for (Class<?> clazz : classes) {
-              register(clazz);
-         }
+        for (Class<?> clazz : classes) {
+            register(clazz);
+        }
     }
 
 }

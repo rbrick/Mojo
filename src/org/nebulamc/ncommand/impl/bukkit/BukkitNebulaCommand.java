@@ -17,28 +17,40 @@ public class BukkitNebulaCommand extends Command {
 
     NebulaCommand command;
 
-    public BukkitNebulaCommand(String name, String description, String usageMessage, List<String> aliases, Method method) {
-        super(name, description, usageMessage, aliases);
-         command = new NebulaCommand(name, (String[]) aliases.toArray(), usageMessage, description, method);
-        if(command.getPermission() != null && !command.getPermission().isEmpty()) {
+    public BukkitNebulaCommand(NebulaCommand command) {
+        super(command.getName(), command.getDesc(), command.getUsage(), Arrays.asList(command.getAliases()));
+        this.command = command;
+        if (command.getPermission() != null) {
+            System.out.println("Setting permission to " + command.getPermission());
             this.setPermission(command.getPermission());
         }
-        if(command.getPermMessage() != null) {
+        if (command.getPermMessage() != null) {
             this.setPermissionMessage(command.getPermMessage());
         }
     }
+
     @Override
     public boolean execute(CommandSender sender, String s, String[] strings) {
-        BukkitCommandContext context = new BukkitCommandContext(sender, Arrays.asList(strings));
+        if(command.getPermission() != null) {
+            if(sender.hasPermission(command.getPermission())) {
+                BukkitCommandContext context = new BukkitCommandContext(sender, Arrays.asList(strings));
+                command.execute(context);
+                return true;
+            } else {
+                sender.sendMessage(this.getPermissionMessage());
+            }
+        } else {
+            BukkitCommandContext context = new BukkitCommandContext(sender, Arrays.asList(strings));
+            command.execute(context);
+            return true;
+        }
 
-        command.execute(context);
         return false;
     }
 
 
-
     public static BukkitNebulaCommand fromNebulaCommand(NebulaCommand cmd) {
-        return new BukkitNebulaCommand(cmd.getName(), cmd.getDesc(), cmd.getUsage(), Arrays.asList(cmd.getAliases()), cmd.getM());
+        return new BukkitNebulaCommand(cmd);
     }
 
 
