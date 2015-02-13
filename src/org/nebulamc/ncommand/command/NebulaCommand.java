@@ -27,7 +27,7 @@ public class NebulaCommand {
     @Nullable
     String permmessage;
     Method m;
-    boolean isStatic = true;
+    boolean isStatic;
 
 
     ParametricRegistry registry = new ParametricRegistry();
@@ -53,7 +53,7 @@ public class NebulaCommand {
             if (isStatic) {
                 m.invoke(null, parameters);
             } else {
-               m.invoke(m.getClass().newInstance(), parameters);
+               m.invoke(m.getDeclaringClass().newInstance(), parameters);
             }
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException | CommandParseException e) {
             e.printStackTrace();
