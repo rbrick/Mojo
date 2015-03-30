@@ -1,5 +1,5 @@
 # Mojo
-annotated command system, Zeus 2.0 pretty much
+Mojo is a command framework for Java.
 
 ```java
   @Command(name = "example")
