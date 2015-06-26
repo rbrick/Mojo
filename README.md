@@ -1,5 +1,9 @@
+This branch is currently deprecated. Please see the development branch for the most up to date version
+=====
+
 # Mojo
 Mojo is a command framework for Java.
+
 
 ```java
   @Command(name = "example")
