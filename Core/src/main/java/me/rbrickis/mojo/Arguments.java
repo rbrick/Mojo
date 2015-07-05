@@ -41,6 +41,19 @@ public class Arguments {
         }
     }
 
+    public String join(int at, char delimiter) {
+        StringBuilder builder = new StringBuilder();
+        for (int x = at; x < arguments.size(); x++) {
+            builder.append(get(x)).append(delimiter);
+        }
+        return builder.toString();
+    }
+
+    public String join(int at) {
+        return join(at, ' ');
+    }
+
+
     public List<String> getArguments() {
         return arguments;
     }

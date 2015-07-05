@@ -5,7 +5,7 @@ public interface CommandContext<S> {
     /**
      * @return The person who issued the command
      */
-    S sender();
+     S sender();
 
 
     /**
