@@ -12,70 +12,56 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
     private Class<?> currentBind = null;
 
     public ParametricRegistry() {
-        bind(String.class).to(new ParameterResolver<String>() {
-            public String resolve(String argument) {
-                return argument;
+        bind(String.class).to(argument -> argument);
+
+        bind(Integer.TYPE).to(argument -> {
+            int parsed = 0;
+            try {
+                parsed = Integer.parseInt(argument);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
             }
+            return parsed;
         });
 
-        bind(Integer.TYPE).to(new ParameterResolver<Integer>() {
-            public Integer resolve(String argument) {
-                int parsed = 0;
-                try {
-                    parsed = Integer.parseInt(argument);
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                }
-                return parsed;
+        bind(Float.TYPE).to(argument -> {
+            float parsed = 0;
+            try {
+                parsed = Float.parseFloat(argument);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
             }
+            return parsed;
         });
 
-        bind(Float.TYPE).to(new ParameterResolver<Float>() {
-            public Float resolve(String argument) {
-                float parsed = 0;
-                try {
-                    parsed = Float.parseFloat(argument);
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                }
-                return parsed;
+        bind(Double.TYPE).to(argument -> {
+            Double parsed = 0d;
+            try {
+                parsed = Double.parseDouble(argument);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
             }
+            return parsed;
         });
 
-        bind(Double.TYPE).to(new ParameterResolver<Double>() {
-            public Double resolve(String argument) {
-                Double parsed = 0d;
-                try {
-                    parsed = Double.parseDouble(argument);
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                }
-                return parsed;
+        bind(Long.TYPE).to(argument -> {
+            Long parsed = 0L;
+            try {
+                parsed = Long.parseLong(argument);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
             }
+            return parsed;
         });
 
-        bind(Long.TYPE).to(new ParameterResolver<Long>() {
-            public Long resolve(String argument) {
-                Long parsed = 0L;
-                try {
-                    parsed = Long.parseLong(argument);
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                }
-                return parsed;
+        bind(Byte.TYPE).to(argument -> {
+            Byte parsed = 0x0;
+            try {
+                parsed = Byte.parseByte(argument);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
             }
-        });
-
-        bind(Byte.TYPE).to(new ParameterResolver<Byte>() {
-            public Byte resolve(String argument) {
-                Byte parsed = 0x0;
-                try {
-                    parsed = Byte.parseByte(argument);
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                }
-                return parsed;
-            }
+            return parsed;
         });
     }
 
