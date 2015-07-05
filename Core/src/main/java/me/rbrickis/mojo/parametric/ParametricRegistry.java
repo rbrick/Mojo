@@ -63,6 +63,16 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             }
             return parsed;
         });
+
+        bind(Boolean.TYPE).to(argument -> {
+            boolean parsed = false;
+            if (argument.equalsIgnoreCase("true") || argument.equalsIgnoreCase("yes")) {
+                parsed = true;
+            } else if (argument.equalsIgnoreCase("false") || argument.equalsIgnoreCase("no")) {
+                parsed = false;
+            }
+            return parsed;
+        });
     }
 
     public Binder<Class<?>, ParameterResolver<?>> bind(Class<?> bind) {
@@ -85,7 +95,7 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
 
     public ParameterResolver<?> get(Class<?> clazz) {
         if (!currentBindings.containsKey(clazz)) {
-             throw new IllegalArgumentException("Could not find resolver for " + clazz.getSimpleName() + ".class");
+            throw new IllegalArgumentException("Could not find resolver for " + clazz.getSimpleName() + ".class");
         }
         return currentBindings.get(clazz);
     }

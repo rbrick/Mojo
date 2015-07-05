@@ -11,13 +11,17 @@ public class Parameter {
 
     private Class<?> type;
 
-    private ParametricRegistry registry = new ParametricRegistry();
+    private ParametricRegistry registry;
 
     private List<Annotation> annotations;
 
-    public Parameter(Class<?> type, Annotation[] annotations) {
+    private int index;
+
+    public Parameter(Class<?> type, Annotation[] annotations, ParametricRegistry registry, int index) {
         this.type = type;
         this.annotations = Arrays.asList(annotations);
+        this.registry = registry;
+        this.index = index;
     }
 
 
@@ -37,10 +41,18 @@ public class Parameter {
 
     public Annotation getAnnotation(final Class<? extends Annotation> annotation) {
         if (isAnnotationPresent(annotation)) {
-            return annotations.stream().filter((a)->a.annotationType() == annotation)
+            return annotations.stream().filter((a) -> a.annotationType() == annotation)
                     .findFirst().orElseThrow(() -> new IllegalArgumentException("Could not find annotation!"));
         }
         return null;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getArgumentIndex() {
+        return index - 1;
     }
 
     public boolean hasText() {

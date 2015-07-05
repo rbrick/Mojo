@@ -2,7 +2,7 @@ package me.rbrickis.mojo.utils;
 
 public final class PrimitiveUtils {
 
-    public static Object toPrimitive(Number number) {
+    public static Object toPrimitiveNumber(Number number) {
         if (number instanceof Byte) {
             return number.byteValue();
         } else if (number instanceof Long) {
@@ -17,5 +17,9 @@ public final class PrimitiveUtils {
             return number.doubleValue();
         }
         return 0;
+    }
+
+    public static Object toPrimitiveBoolean(Boolean booleans) {
+        return booleans.booleanValue();
     }
 }
