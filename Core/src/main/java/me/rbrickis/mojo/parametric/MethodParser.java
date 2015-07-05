@@ -1,14 +1,14 @@
 package me.rbrickis.mojo.parametric;
 
-import me.rbrickis.mojo.Arguments;
-
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MethodParser {
 
     private Method method;
 
-    public MethodParser(Method method) {
+    public MethodParser(Method method, ParametricRegistry registry) {
         this.method = method;
     }
 
@@ -17,22 +17,14 @@ public class MethodParser {
     }
 
     /**
-     * @param arguments - The arguments of the command
-     * @return An array of objects to be passed into the method.
+     * @return A list of {@link Parameter}s
      */
-    public Object[] parse(Arguments arguments) {
-
-        boolean hasText = false;
-
-
-
-        // Skip the first parameter since it should be the command context
+    public List<Parameter> parse() {
+        List<Parameter> parameters = new ArrayList<>();
         for (int i = 1; i < method.getParameterCount(); i++) {
-
-
-
+            Parameter lp = new Parameter(method.getParameterTypes()[i], method.getParameterAnnotations()[i]);
+            parameters.add(lp);
         }
-
-        return null;
+        return parameters;
     }
 }

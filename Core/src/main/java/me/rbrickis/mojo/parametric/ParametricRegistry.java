@@ -96,4 +96,11 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
     public Map<Class<?>, ParameterResolver<?>> getBindings() {
         return currentBindings;
     }
+
+    public ParameterResolver<?> get(Class<?> clazz) {
+        if (!currentBindings.containsKey(clazz)) {
+             throw new IllegalArgumentException("Could not find resolver for " + clazz.getSimpleName() + ".class");
+        }
+        return currentBindings.get(clazz);
+    }
 }
