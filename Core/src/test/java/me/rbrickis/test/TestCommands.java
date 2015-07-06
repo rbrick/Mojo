@@ -12,14 +12,7 @@ public class TestCommands {
     }
 
     @Command(aliases = {"broadcast", "bc"})
-    public void broadcast(Actor sender, @Text @Default("Hello World!") String message) {
+    public void broadcast(Actor sender, @Default("Hello World!") @Text String message) {
         System.out.println(message);
     }
-
-    @Command(aliases = {"setage"})
-    public void setAge(Actor actor, @Default("18") int age) {
-        actor.setAge(age);
-        actor.sendMessage("You are " + age + " year(s) old.");
-    }
-
 }

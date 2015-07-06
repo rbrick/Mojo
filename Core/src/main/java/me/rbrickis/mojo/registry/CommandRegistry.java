@@ -35,7 +35,13 @@ public class CommandRegistry {
 
 
     public CommandHolder get(String alias) {
-        return commandMap.get(alias);
+        CommandHolder h = null;
+        for (String a : commandMap.keySet()) {
+            if (a.equalsIgnoreCase(alias)) {
+                h = commandMap.get(a);
+            }
+        }
+        return h;
     }
 
     public Map<String, CommandHolder> getCommandMap() {
