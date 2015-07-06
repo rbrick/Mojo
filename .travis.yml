@@ -1,2 +1,4 @@
 #java ftw?
 language: java
+jdk:
+  - oraclejdk8
