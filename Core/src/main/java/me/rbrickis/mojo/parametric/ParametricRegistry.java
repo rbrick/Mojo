@@ -24,15 +24,7 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             return parsed;
         });
 
-        bind(Integer.class).to(argument -> {
-            int parsed = 0;
-            try {
-                parsed = Integer.parseInt(argument);
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-            return parsed;
-        });
+        bind(Integer.class).to(currentBindings.get(Integer.TYPE));
 
         bind(Float.TYPE).to(argument -> {
             float parsed = 0;
@@ -44,15 +36,7 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             return parsed;
         });
 
-        bind(Float.class).to(argument -> {
-            float parsed = 0;
-            try {
-                parsed = Float.parseFloat(argument);
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-            return parsed;
-        });
+        bind(Float.class).to(currentBindings.get(Float.TYPE));
 
         bind(Double.TYPE).to(argument -> {
             Double parsed = 0d;
@@ -64,15 +48,7 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             return parsed;
         });
 
-        bind(Double.class).to(argument -> {
-            Double parsed = 0d;
-            try {
-                parsed = Double.parseDouble(argument);
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-            return parsed;
-        });
+        bind(Double.class).to(currentBindings.get(Double.TYPE));
 
         bind(Long.TYPE).to(argument -> {
             Long parsed = 0L;
@@ -84,15 +60,9 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             return parsed;
         });
 
-        bind(Long.class).to(argument -> {
-            Long parsed = 0L;
-            try {
-                parsed = Long.parseLong(argument);
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-            return parsed;
-        });
+        bind(Long.class).to(currentBindings.get(Long.TYPE));
+
+
 
         bind(Byte.TYPE).to(argument -> {
             Byte parsed = 0x0;
@@ -104,15 +74,7 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             return parsed;
         });
 
-        bind(Byte.class).to(argument -> {
-            Byte parsed = 0x0;
-            try {
-                parsed = Byte.parseByte(argument);
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-            return parsed;
-        });
+        bind(Byte.class).to(currentBindings.get(Byte.TYPE));
 
         bind(Boolean.TYPE).to(argument -> {
             boolean parsed = false;
@@ -124,15 +86,7 @@ public class ParametricRegistry implements Binder<Class<?>, ParameterResolver<?>
             return parsed;
         });
 
-        bind(Boolean.class).to(argument -> {
-            boolean parsed = false;
-            if (argument.equalsIgnoreCase("true") || argument.equalsIgnoreCase("yes")) {
-                parsed = true;
-            } else if (argument.equalsIgnoreCase("false") || argument.equalsIgnoreCase("no")) {
-                parsed = false;
-            }
-            return parsed;
-        });
+        bind(Boolean.class).to(currentBindings.get(Boolean.TYPE));
 
     }
 
