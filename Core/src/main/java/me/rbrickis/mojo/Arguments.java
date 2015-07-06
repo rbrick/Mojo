@@ -1,11 +1,16 @@
 package me.rbrickis.mojo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Arguments {
 
     private List<String> arguments;
+
+    public Arguments() {
+        this.arguments = new ArrayList<>();
+    }
 
     public Arguments(String[] arguments) {
         this.arguments = Arrays.asList(arguments);
@@ -14,6 +19,7 @@ public class Arguments {
     public Arguments(List<String> arguments) {
         this.arguments = arguments;
     }
+
 
     /**
      *  @see Arguments#size()

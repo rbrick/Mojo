@@ -1,6 +1,6 @@
 package me.rbrickis.mojo.dispatcher;
 
-import me.rbrickis.mojo.CommandContext;
+import me.rbrickis.mojo.Arguments;
 import me.rbrickis.mojo.annotations.Command;
 import me.rbrickis.mojo.parametric.MethodParser;
 import me.rbrickis.mojo.parametric.Parameter;
@@ -26,7 +26,9 @@ public class CommandHolder {
 
     private Method method;
 
-    public CommandHolder(Method method, ParametricRegistry registry) {
+    private Class<?> senderType;
+
+    public CommandHolder(Method method, ParametricRegistry registry, Class<?> senderType) {
 
         Command command = method.getDeclaredAnnotation(Command.class);
         if (command.aliases().length == 0) {
@@ -41,6 +43,7 @@ public class CommandHolder {
         }
         this.registry = registry;
         this.method = method;
+        this.senderType = senderType;
         this.method.setAccessible(true);
     }
 
@@ -56,11 +59,18 @@ public class CommandHolder {
         return aliases;
     }
 
-    public void call(CommandContext context) {
+    public void call(Object sender, Arguments arguments) {
         MethodParser parser = new MethodParser(method, registry);
         List<Parameter> parameter = parser.parse();
+
+        if (senderType == null) {
+            throw new IllegalArgumentException("Sender type is null!");
+        }
+        if (!senderType.isAssignableFrom(sender.getClass())) {
+             throw new IllegalArgumentException("Object provided is not assignable from the sender provided");
+        }
         ParametricParser pParser = new ParametricParser(parameter);
-        Object[] parsedObj = pParser.parse(context);
+        Object[] parsedObj = pParser.parse(senderType.cast(sender), arguments);
         boolean isStatic = Modifier.isStatic(method.getModifiers());
 
         if (isStatic) {

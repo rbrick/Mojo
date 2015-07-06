@@ -1,7 +1,6 @@
 package me.rbrickis.mojo.parametric;
 
 import me.rbrickis.mojo.Arguments;
-import me.rbrickis.mojo.CommandContext;
 import me.rbrickis.mojo.utils.PrimitiveUtils;
 
 import java.util.ArrayList;
@@ -11,15 +10,15 @@ public class ParametricParser {
 
     private List<Parameter> parameters;
 
+
     public ParametricParser(List<Parameter> parameters) {
         this.parameters = parameters;
     }
 
-    public Object[] parse(CommandContext context) {
-        Arguments arguments = context.arguments();
+    public Object[] parse(Object sender, Arguments arguments) {
 
         List<Object> objects = new ArrayList<>();
-        objects.add(context);
+        objects.add(sender);
 
         for (Parameter parameter : parameters) {
             Object obj;

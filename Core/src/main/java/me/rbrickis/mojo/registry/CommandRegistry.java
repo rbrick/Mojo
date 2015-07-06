@@ -2,7 +2,7 @@ package me.rbrickis.mojo.registry;
 
 import me.rbrickis.mojo.annotations.Command;
 import me.rbrickis.mojo.dispatcher.CommandHolder;
-import me.rbrickis.mojo.parametric.ParametricRegistry;
+import me.rbrickis.mojo.parametric.graph.CommandGraph;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -12,7 +12,11 @@ public class CommandRegistry {
 
     private Map<String, CommandHolder> commandMap = new HashMap<>();
 
-    private ParametricRegistry parametricRegistry = new ParametricRegistry();
+    private CommandGraph commandGraph;
+
+    public CommandRegistry(CommandGraph graph) {
+        this.commandGraph = graph;
+    }
 
     public void registerCommand(CommandHolder command) {
         commandMap.put(command.getName(), command);
@@ -24,13 +28,9 @@ public class CommandRegistry {
     public void register(Object object) {
         for (Method method : object.getClass().getMethods()) {
             if (method.isAnnotationPresent(Command.class)) {
-                registerCommand(new CommandHolder(method, parametricRegistry));
+                registerCommand(new CommandHolder(method, commandGraph.getRegistry(), commandGraph.getSenderType()));
             }
         }
-    }
-
-    public void useParametricRegistry(ParametricRegistry parametricRegistry) {
-        this.parametricRegistry = parametricRegistry;
     }
 
 
