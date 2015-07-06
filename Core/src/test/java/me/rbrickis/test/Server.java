@@ -6,6 +6,7 @@ import me.rbrickis.mojo.parametric.graph.CommandGraph;
 import me.rbrickis.mojo.registry.CommandRegistry;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Server {
 
@@ -30,6 +31,7 @@ public class Server {
         // has 1 argument, but argument marked with @Text annotation, so i can provide as many arguments as i want,
         // and it will go on forever (or at least until the jvm poops out).
         dispatcher.dispatch("broadcast", sender, new Arguments(Arrays.asList("Hello", "this", "is", "a", "test")));
+        dispatcher.dispatch("setage", sender, new Arguments(Collections.singletonList("18")));
     }
 
 }

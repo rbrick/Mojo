@@ -15,4 +15,10 @@ public class TestCommands {
     public void broadcast(Actor sender, @Default("Hello World!") @Text String message) {
         System.out.println(message);
     }
+
+    @Command(aliases = "setage")
+    public void setAge(Actor actor, Integer age) {
+        actor.setAge(age);
+        System.out.println(actor.getAge());
+    }
 }
