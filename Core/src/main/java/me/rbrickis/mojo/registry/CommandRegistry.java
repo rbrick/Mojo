@@ -28,7 +28,7 @@ public class CommandRegistry {
     public void register(Object object) {
         for (Method method : object.getClass().getMethods()) {
             if (method.isAnnotationPresent(Command.class)) {
-                registerCommand(new CommandHolder(method, commandGraph.getRegistry(), commandGraph.getSenderType()));
+                registerCommand(new CommandHolder(method, commandGraph.getRegistry(), commandGraph.getSenderForMethod(method, commandGraph.getSender(Command.class))));
             }
         }
     }

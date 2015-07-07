@@ -4,6 +4,6 @@ import me.rbrickis.mojo.Arguments;
 
 public interface Dispatcher<S> {
 
-    void dispatch(String commandName, S sender, Arguments arguments);
+    boolean dispatch(String commandName, S sender, Arguments arguments) throws DispatchException;
 
 }

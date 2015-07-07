@@ -1,0 +1,3 @@
+main: me.rbrickis.mojo.bukkit.ExamplePlugin
+name: Mojo-Bukkit
+version: 1.0.0
