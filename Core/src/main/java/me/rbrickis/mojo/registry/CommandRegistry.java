@@ -1,50 +1,15 @@
 package me.rbrickis.mojo.registry;
 
-import me.rbrickis.mojo.annotations.Command;
 import me.rbrickis.mojo.dispatcher.CommandHolder;
-import me.rbrickis.mojo.parametric.graph.CommandGraph;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+public interface CommandRegistry {
 
-public class CommandRegistry {
+    void registerCommand(CommandHolder holder);
 
-    private Map<String, CommandHolder> commandMap = new HashMap<>();
+    void registerObject(Object object);
 
-    private CommandGraph commandGraph;
+    void registerClass(Class<?> clazz);
 
-    public CommandRegistry(CommandGraph graph) {
-        this.commandGraph = graph;
-    }
+    CommandHolder get(String alias);
 
-    public void registerCommand(CommandHolder command) {
-        commandMap.put(command.getName(), command);
-        for (String alias : command.getAliases()) {
-            commandMap.put(alias, command);
-        }
-    }
-
-    public void register(Object object) {
-        for (Method method : object.getClass().getMethods()) {
-            if (method.isAnnotationPresent(Command.class)) {
-                registerCommand(new CommandHolder(method, commandGraph.getRegistry(), commandGraph.getSenderForMethod(method, commandGraph.getSender(Command.class))));
-            }
-        }
-    }
-
-
-    public CommandHolder get(String alias) {
-        CommandHolder h = null;
-        for (String a : commandMap.keySet()) {
-            if (a.equalsIgnoreCase(alias)) {
-                h = commandMap.get(a);
-            }
-        }
-        return h;
-    }
-
-    public Map<String, CommandHolder> getCommandMap() {
-        return commandMap;
-    }
 }

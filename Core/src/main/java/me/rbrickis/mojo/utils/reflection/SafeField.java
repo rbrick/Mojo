@@ -29,6 +29,7 @@ public class SafeField<T> {
     }
 
     public Field getField() {
+        field.setAccessible(true);
         return field;
     }
 

@@ -7,6 +7,7 @@ import me.rbrickis.mojo.parametric.Parameter;
 import me.rbrickis.mojo.parametric.ParametricParser;
 import me.rbrickis.mojo.parametric.ParametricRegistry;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -57,6 +58,17 @@ public class CommandHolder {
 
     public String[] getAliases() {
         return aliases;
+    }
+
+
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotation) {
+        boolean found = false;
+        for (Annotation anno : method.getAnnotations()) {
+            if (anno.annotationType() == annotation) {
+                found = true;
+            }
+        }
+        return found;
     }
 
     public void call(Object sender, Arguments arguments) {

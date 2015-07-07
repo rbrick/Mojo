@@ -15,10 +15,9 @@ public class Server {
         CommandGraph graph = new CommandGraph()
                 .useSender(Actor.class);
 
-        CommandRegistry registry = new CommandRegistry(graph);
-        registry.register(new TestCommands());
-
         Actor sender = new Actor("System", 18);
+
+        CommandRegistry registry = new TestCommandRegistry(graph);
 
         Dispatcher<Actor> dispatcher = new TestDispatcher(registry);
 
