@@ -21,5 +21,15 @@ public class ExampleCommands {
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
+    @Command(aliases = {"message", "msg"})
+    public void message(Player sender, Player receiver, @Text String message) {
+        if (receiver == null) {
+            sender.sendMessage(ChatColor.RED + "Could not find player!");
+        } else {
+            receiver.sendMessage(ChatColor.GRAY + "(From " + sender.getDisplayName() + ChatColor.GRAY + "): "
+                    + ChatColor.WHITE + message);
+        }
+    }
+
 
 }
