@@ -12,7 +12,7 @@ public class Arguments {
         this.arguments = new ArrayList<>();
     }
 
-    public Arguments(String[] arguments) {
+    public Arguments(String... arguments) {
         this.arguments = Arrays.asList(arguments);
     }
 
