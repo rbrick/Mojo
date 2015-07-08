@@ -15,18 +15,18 @@ public class ParametricParser {
         this.parameters = parameters;
     }
 
-    public Object[] parse(Object sender, Arguments arguments) {
-
+    public ParsedResult parse(Object sender, Arguments arguments) {
+        boolean wasSuccess = true;
         List<Object> objects = new ArrayList<>();
         objects.add(sender);
 
         for (Parameter parameter : parameters) {
-            Object obj;
+            Object obj = null;
             if (arguments.get(parameter.getArgumentIndex()) == null) {
                 if (parameter.hasDefault()) {
                     obj = parameter.parse(parameter.getDefault());
                 } else {
-                    throw new IllegalArgumentException("Argument at index " + parameter.getArgumentIndex() + " is null!");
+                    wasSuccess = false;
                 }
             } else {
                 obj = parameter.parse(arguments.get(parameter.getArgumentIndex()));
@@ -49,7 +49,25 @@ public class ParametricParser {
             objects.add(obj);
         }
 
-        return objects.toArray();
+        return new ParsedResult(objects.toArray(), wasSuccess);
+    }
+
+    public class ParsedResult {
+        private Object[] objects;
+        private boolean successful;
+
+        public ParsedResult(Object[] objects, boolean successful) {
+            this.objects = objects;
+            this.successful = successful;
+        }
+
+        public boolean isSuccessful() {
+            return successful;
+        }
+
+        public Object[] getObjects() {
+            return objects;
+        }
     }
 
 }

@@ -17,11 +17,14 @@ public class Parameter {
 
     private int index;
 
-    public Parameter(Class<?> type, Annotation[] annotations, ParametricRegistry registry, int index) {
+    private String name;
+
+    public Parameter(Class<?> type, Annotation[] annotations, ParametricRegistry registry, String name, int index) {
         this.type = type;
         this.annotations = Arrays.asList(annotations);
         this.registry = registry;
         this.index = index;
+        this.name = name;
     }
 
 
@@ -71,8 +74,8 @@ public class Parameter {
         return null;
     }
 
-    public void use(ParametricRegistry registry) {
-        this.registry = registry;
+    public String getName() {
+        return name;
     }
 
     public Object parse(String argument) {

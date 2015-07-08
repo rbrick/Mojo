@@ -1,7 +1,7 @@
 package me.rbrickis.test;
 
 import me.rbrickis.mojo.Arguments;
-import me.rbrickis.mojo.dispatcher.CommandHolder;
+import me.rbrickis.mojo.command.CommandHolder;
 import me.rbrickis.mojo.dispatcher.DispatchException;
 import me.rbrickis.mojo.dispatcher.Dispatcher;
 import me.rbrickis.mojo.registry.CommandRegistry;

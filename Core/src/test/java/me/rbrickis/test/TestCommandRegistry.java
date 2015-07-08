@@ -1,7 +1,7 @@
 package me.rbrickis.test;
 
 import me.rbrickis.mojo.annotations.Command;
-import me.rbrickis.mojo.dispatcher.CommandHolder;
+import me.rbrickis.mojo.command.CommandHolder;
 import me.rbrickis.mojo.parametric.graph.CommandGraph;
 import me.rbrickis.mojo.registry.CommandRegistry;
 

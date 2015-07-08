@@ -1,6 +1,6 @@
 package me.rbrickis.mojo.registry;
 
-import me.rbrickis.mojo.dispatcher.CommandHolder;
+import me.rbrickis.mojo.command.CommandHolder;
 
 public interface CommandRegistry {
 

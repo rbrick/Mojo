@@ -1,4 +1,4 @@
-package me.rbrickis.mojo.dispatcher;
+package me.rbrickis.mojo.command;
 
 import me.rbrickis.mojo.Arguments;
 import me.rbrickis.mojo.annotations.Command;
@@ -29,6 +29,12 @@ public class CommandHolder {
 
     private Class<?> senderType;
 
+    private List<Parameter> parameters;
+
+    private String usage;
+
+    private String description;
+
     public CommandHolder(Method method, ParametricRegistry registry, Class<?> senderType) {
 
         Command command = method.getDeclaredAnnotation(Command.class);
@@ -40,20 +46,19 @@ public class CommandHolder {
             for (int i = 1; i < command.aliases().length; i++) {
                 laliases.add(command.aliases()[i]);
             }
-            this.aliases = laliases.toArray(new String[] {});
+            this.aliases = laliases.toArray(new String[]{});
         }
         this.registry = registry;
         this.method = method;
         this.senderType = senderType;
         this.method.setAccessible(true);
+        MethodParser parser = new MethodParser(method, registry);
+        this.parameters = parser.parse();
+        this.description = command.desc();
     }
 
     public String getName() {
         return name;
-    }
-
-    public ParametricRegistry getRegistry() {
-        return registry;
     }
 
     public String[] getAliases() {
@@ -71,35 +76,46 @@ public class CommandHolder {
         return found;
     }
 
-    public void call(Object sender, Arguments arguments) {
-        MethodParser parser = new MethodParser(method, registry);
-        List<Parameter> parameter = parser.parse();
+    public String getDescription() {
+        return description;
+    }
 
+    public String getUsage() {
+        if (usage == null) usage = getName() + " " + new UsageBuilder(parameters).build();
+        return usage;
+    }
+
+    public boolean call(Object sender, Arguments arguments) {
         if (senderType == null) {
             throw new IllegalArgumentException("Sender type is null!");
         }
         if (!senderType.isAssignableFrom(sender.getClass())) {
-             throw new IllegalArgumentException("Object provided is not assignable from the sender provided");
+            throw new IllegalArgumentException("Object provided is not assignable from the sender provided");
         }
-        ParametricParser pParser = new ParametricParser(parameter);
-        Object[] parsedObj = pParser.parse(senderType.cast(sender), arguments);
+        ParametricParser pParser = new ParametricParser(parameters);
+        ParametricParser.ParsedResult parsedObj = pParser.parse(senderType.cast(sender), arguments);
         boolean isStatic = Modifier.isStatic(method.getModifiers());
+
+        if (!parsedObj.isSuccessful()) {
+            return false;
+        }
 
         if (isStatic) {
             try {
-                method.invoke(null, parsedObj);
+                method.invoke(null, parsedObj.getObjects());
+                return true;
             } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+                return false;
             }
         } else {
             try {
                 Object instance = method.getDeclaringClass().newInstance();
-                method.invoke(instance, parsedObj);
+                method.invoke(instance, parsedObj.getObjects());
+                return true;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+                return false;
             }
         }
-
     }
 
 }

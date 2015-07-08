@@ -2,7 +2,7 @@ package me.rbrickis.mojo.bukkit.command;
 
 import me.rbrickis.mojo.Arguments;
 import me.rbrickis.mojo.bukkit.annotations.Player;
-import me.rbrickis.mojo.dispatcher.CommandHolder;
+import me.rbrickis.mojo.command.CommandHolder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,6 +16,8 @@ public class WrappedCommand extends Command {
     public WrappedCommand(CommandHolder holder) {
         super(holder.getName());
         setAliases(Arrays.asList(holder.getAliases()));
+        setDescription(holder.getDescription());
+        setUsage("/" + holder.getUsage());
         this.holder = holder;
     }
 
@@ -26,10 +28,14 @@ public class WrappedCommand extends Command {
                 commandSender.sendMessage(ChatColor.RED + "You must be a player to perform this command!");
                 return true;
             } else {
-                holder.call((org.bukkit.entity.Player) commandSender, new Arguments(strings));
+                if (!holder.call((org.bukkit.entity.Player) commandSender, new Arguments(strings))) {
+                    commandSender.sendMessage(ChatColor.RED + "Usage: " + getUsage());
+                }
             }
         } else {
-            holder.call(commandSender, new Arguments(strings));
+             if (!holder.call(commandSender, new Arguments(strings))) {
+                commandSender.sendMessage(ChatColor.RED + "Usage: " + getUsage());
+            }
         }
         return false;
     }

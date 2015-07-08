@@ -22,6 +22,7 @@ public class ExampleCommands {
     }
 
     @Command(aliases = {"message", "msg"})
+    @me.rbrickis.mojo.bukkit.annotations.Player
     public void message(Player sender, Player receiver, @Text String message) {
         if (receiver == null) {
             sender.sendMessage(ChatColor.RED + "Could not find player!");
