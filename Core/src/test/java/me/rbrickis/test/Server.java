@@ -19,6 +19,8 @@ public class Server {
 
         CommandRegistry registry = new TestCommandRegistry(graph);
 
+        registry.registerClass(TestCommands.class);
+
         Dispatcher<Actor> dispatcher = new TestDispatcher(registry);
 
         // no args in method (doesn't matter what is provided, it will always execute the code)
