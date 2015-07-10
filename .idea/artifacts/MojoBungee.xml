@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="MojoBungee">
-    <output-path>$PROJECT_DIR$/out/artifacts/MojoBungee</output-path>
-    <root id="archive" name="MojoBungee.jar">
-      <element id="module-output" name="mojo-core" />
-      <element id="module-output" name="Bungee" />
-    </root>
-  </artifact>
-</component>
