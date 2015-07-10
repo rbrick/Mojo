@@ -42,23 +42,14 @@ public class BukkitCommandRegistry implements CommandRegistry {
 
         if (knownCommands.containsKey(command.getName().toLowerCase())) {
             knownCommands.remove(command.getName());
-            try {
-                Reflection.getSafeClass(commandMap).getField("knownCommands").getField().set(commandMap, knownCommands);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
+            Reflection.getSafeClass(commandMap).getField("knownCommands").set(knownCommands);
         }
         commandMap.register(parent.getName(), new WrappedCommand(command));
 
         for (String alias : command.getAliases()) {
             if (knownCommands.containsKey(alias.toLowerCase())) {
                 knownCommands.remove(alias.toLowerCase());
-                try {
-                    Reflection.getSafeClass(commandMap).getField("knownCommands").getField().set(commandMap, knownCommands);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                Reflection.getSafeClass(commandMap).getField("knownCommands").set(knownCommands);
             }
             commandMap.register(parent.getName(), new WrappedCommand(command));
         }

@@ -27,4 +27,5 @@ public class SafeClass<T> {
           return new SafeField<ST>(this, name);
     }
 
+
 }

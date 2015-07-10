@@ -28,6 +28,15 @@ public class SafeField<T> {
         return null;
     }
 
+    public void set(T value) {
+        try {
+            field.setAccessible(true);
+            field.set(owner.get(), value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Field getField() {
         field.setAccessible(true);
         return field;
