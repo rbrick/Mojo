@@ -8,7 +8,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -79,4 +88,26 @@ public class ExampleCommands {
     }
 
 
+    // gets a commit from the latest build
+    @Command(aliases = {"getcommit"})
+    public void getGitCommit(CommandSender sender, @Default("Mojo") String project) {
+        try {
+            URL uri = new URI("http://localhost:8080/job/"+ project +"/lastBuild/api/json?pretty=true").toURL();
+            final JSONParser parser = new JSONParser();
+            final JSONObject object = (JSONObject)parser.parse(new InputStreamReader(uri.openStream()));
+            final JSONObject changeSet = (JSONObject) object.get("changeSet");
+            final JSONArray items = (JSONArray) changeSet.get("items");
+            final JSONObject commitObject = (JSONObject) items.get(0);
+            final String buildDisplayName = (String) object.get("fullDisplayName");
+            final String commitMessage = (String) commitObject.get("msg");
+            final String commitId = (String) commitObject.get("commitId");
+            final String date = (String) commitObject.get("date");
+            sender.sendMessage(ChatColor.GREEN + buildDisplayName + ":");
+            sender.sendMessage(ChatColor.YELLOW + " Commit ID: " + ChatColor.GREEN + commitId.substring(0, 12));
+            sender.sendMessage(ChatColor.YELLOW + " Commit Message: " + ChatColor.GREEN + commitMessage);
+            sender.sendMessage(ChatColor.YELLOW + " Date of Commit" + ChatColor.GREEN + date);
+        } catch (URISyntaxException | IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }
