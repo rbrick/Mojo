@@ -1,11 +1,14 @@
 package me.rbrickis.mojo.bukkit.command;
 
 import me.rbrickis.mojo.annotations.Command;
+import me.rbrickis.mojo.bukkit.annotations.Player;
+import me.rbrickis.mojo.bukkit.parametric.BukkitParametricRegistry;
 import me.rbrickis.mojo.command.CommandHolder;
 import me.rbrickis.mojo.parametric.graph.CommandGraph;
 import me.rbrickis.mojo.registry.CommandRegistry;
 import me.rbrickis.mojo.utils.Reflection;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +31,14 @@ public class BukkitCommandRegistry implements CommandRegistry {
 
 
     private JavaPlugin parent;
+
+    public BukkitCommandRegistry(JavaPlugin plugin) {
+        this(new CommandGraph()
+                .useSender(CommandSender.class)
+                .unlessMarkedWith(Player.class)
+                .thenUseSender(org.bukkit.entity.Player.class)
+                .withParametricRegistry(new BukkitParametricRegistry()), plugin);
+    }
 
     public BukkitCommandRegistry(CommandGraph graph, JavaPlugin plugin) {
         this.commandGraph = graph;

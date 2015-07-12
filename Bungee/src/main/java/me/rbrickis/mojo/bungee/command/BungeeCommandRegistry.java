@@ -1,11 +1,14 @@
 package me.rbrickis.mojo.bungee.command;
 
+import me.rbrickis.mojo.bungee.annotations.Player;
+import me.rbrickis.mojo.bungee.parametric.BungeeParametricRegistry;
 import me.rbrickis.mojo.command.CommandHolder;
 import me.rbrickis.mojo.parametric.graph.CommandGraph;
 import me.rbrickis.mojo.registry.CommandRegistry;
 import me.rbrickis.mojo.utils.Reflection;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -23,6 +26,14 @@ public class BungeeCommandRegistry implements CommandRegistry {
     private CommandGraph graph;
 
     private Plugin parent;
+
+    public BungeeCommandRegistry(Plugin plugin) {
+        this(new CommandGraph()
+                .useSender(CommandSender.class)
+                .unlessMarkedWith(Player.class)
+                .thenUseSender(ProxiedPlayer.class)
+                .withParametricRegistry(new BungeeParametricRegistry()), plugin);
+    }
 
     public BungeeCommandRegistry(CommandGraph graph, Plugin plugin) {
         this.graph = graph;
