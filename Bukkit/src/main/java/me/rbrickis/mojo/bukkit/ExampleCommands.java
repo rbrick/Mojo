@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class ExampleCommands {
 
-    Map<UUID, UUID> replyMap = new HashMap<>();
+    private Map<UUID, UUID> replyMap = new HashMap<>();
 
     @Command(aliases = "hello")
     @me.rbrickis.mojo.bukkit.annotations.Player
@@ -40,11 +40,11 @@ public class ExampleCommands {
 
             sender.sendMessage(ChatColor.GRAY + "(To " + receiver.getDisplayName() + ChatColor.GRAY + "): "
                     + ChatColor.WHITE + message);
-            sender.playSound(sender.getLocation(), Sound.ANVIL_LAND, 1f, 1f);
+            sender.playSound(sender.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 0.1f);
             receiver.sendMessage(ChatColor.GRAY + "(From " + sender.getDisplayName() + ChatColor.GRAY + "): "
                     + ChatColor.WHITE + message);
 
-            receiver.playSound(sender.getLocation(), Sound.ANVIL_LAND, 1f, 1f);
+            receiver.playSound(sender.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 0.1f);
         }
     }
 
@@ -58,10 +58,10 @@ public class ExampleCommands {
                 Player toSendPlayer = Bukkit.getPlayer(toSend);
                 sender.sendMessage(ChatColor.GRAY + "(To " + toSendPlayer.getDisplayName() + ChatColor.GRAY + "): "
                         + ChatColor.WHITE + message);
-                sender.playSound(sender.getLocation(), Sound.ANVIL_LAND, 1f, 1f);
+                sender.playSound(sender.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 0.1f);
                 toSendPlayer.sendMessage(ChatColor.GRAY + "(From " + sender.getDisplayName() + ChatColor.GRAY + "): "
                         + ChatColor.WHITE + message);
-                toSendPlayer.playSound(sender.getLocation(), Sound.ANVIL_LAND, 1f, 1f);
+                toSendPlayer.playSound(sender.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 0.1f);
             } else {
                 replyMap.remove(toSend);
                 replyMap.remove(sender.getUniqueId());

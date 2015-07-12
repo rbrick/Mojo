@@ -6,6 +6,7 @@ import me.rbrickis.mojo.bungee.annotations.Player;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 public class SomeCommands {
 
-    Map<UUID, UUID> replyMap = new HashMap<>();
+    private Map<UUID, UUID> replyMap = new HashMap<>();
 
     @Command(aliases = {"sendto", "send"})
     public void sendTo(CommandSender sender, ProxiedPlayer player, ServerInfo serverInfo) {
@@ -44,7 +45,8 @@ public class SomeCommands {
     @Player
     public void message(ProxiedPlayer sender, ProxiedPlayer receiver, @Text String message) {
         if (receiver == null) {
-            sender.sendMessage(ChatColor.RED + "Could not find player!");
+            new ComponentBuilder("").color(ChatColor.AQUA);
+            sender.sendMessage(new TextComponent(ChatColor.RED + "Could not find player!"));
         } else {
             replyMap.put(sender.getUniqueId(), receiver.getUniqueId());
             replyMap.put(receiver.getUniqueId(), sender.getUniqueId());
