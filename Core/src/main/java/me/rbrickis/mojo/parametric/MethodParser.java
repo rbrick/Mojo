@@ -29,8 +29,9 @@ public class MethodParser {
     public List<Parameter> parse() {
         List<Parameter> parameters = new ArrayList<>();
         for (int i = 1; i < method.getParameterCount(); i++) {
-            Parameter lp = new Parameter(method.getParameterTypes()[i], method.getParameterAnnotations()[i], registry,
-                    method.getParameters()[i].getName(), i);
+            Parameter lp =
+                new Parameter(method.getParameterTypes()[i], method.getParameterAnnotations()[i],
+                    registry, i);
             parameters.add(lp);
         }
         return parameters;

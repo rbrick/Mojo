@@ -2,6 +2,7 @@ package me.rbrickis.test;
 
 import me.rbrickis.mojo.Arguments;
 import me.rbrickis.mojo.command.CommandHolder;
+import me.rbrickis.mojo.command.CommandInvocationException;
 import me.rbrickis.mojo.dispatcher.DispatchException;
 import me.rbrickis.mojo.dispatcher.Dispatcher;
 import me.rbrickis.mojo.registry.CommandRegistry;
@@ -20,7 +21,11 @@ public class TestDispatcher implements Dispatcher<Actor> {
 
         if (commandHolder != null) {
             System.out.println("Sender " + sender.getName() + " issued command " + commandHolder.getName());
-            commandHolder.call(sender, arguments);
+            try {
+                commandHolder.call(sender, arguments);
+            } catch (CommandInvocationException e) {
+                e.printStackTrace();
+            }
             return true;
         } else {
             System.out.println("Could not find command '" + commandName + "'.");

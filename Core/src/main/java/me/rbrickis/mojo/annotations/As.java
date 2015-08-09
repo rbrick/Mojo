@@ -5,16 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This annotation defines the name of a parameter within a method.
+ */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Require {
-    /**
-     * @return The permission required to perform the command
-     */
+@Target(ElementType.PARAMETER)
+public @interface As {
     String value();
-
-    /**
-     * Optional: The permission message.
-     */
-    String message() default "";
 }

@@ -10,11 +10,8 @@ import java.util.Map;
 
 public class CommandGraph {
 
-
     private Map<Class<? extends Annotation>, Class<?>> senderMap = new HashMap<>();
-
     private ParametricRegistry registry = new ParametricRegistry();
-
     private Class<? extends Annotation> b = null;
 
     public CommandGraph useSender(Class<?> clazz) {
@@ -41,6 +38,7 @@ public class CommandGraph {
         return this;
     }
 
+
     public ParametricRegistry getRegistry() {
         return registry;
     }
@@ -59,8 +57,9 @@ public class CommandGraph {
         Class<?> found = null;
         if (method.isAnnotationPresent(Command.class)) {
             for (Annotation annotation : method.getAnnotations()) {
-                if (annotation.annotationType() != Command.class && senderMap.containsKey(annotation.annotationType())) {
-                     found = senderMap.get(annotation.annotationType());
+                if (annotation.annotationType() != Command.class && senderMap
+                    .containsKey(annotation.annotationType())) {
+                    found = senderMap.get(annotation.annotationType());
                 }
             }
         }

@@ -2,6 +2,7 @@ package me.rbrickis.mojo.command;
 
 import me.rbrickis.mojo.Arguments;
 import me.rbrickis.mojo.annotations.Command;
+import me.rbrickis.mojo.annotations.Require;
 import me.rbrickis.mojo.parametric.MethodParser;
 import me.rbrickis.mojo.parametric.Parameter;
 import me.rbrickis.mojo.parametric.ParametricParser;
@@ -20,19 +21,14 @@ import java.util.List;
 public class CommandHolder {
 
     private String name;
-
     private String[] aliases;
-
+    private String permission = "";
+    private String permissionMessage = "";
     private ParametricRegistry registry;
-
     private Method method;
-
     private Class<?> senderType;
-
     private List<Parameter> parameters;
-
     private String usage;
-
     private String description;
 
     public CommandHolder(Method method, ParametricRegistry registry, Class<?> senderType) {
@@ -46,8 +42,13 @@ public class CommandHolder {
             for (int i = 1; i < command.aliases().length; i++) {
                 laliases.add(command.aliases()[i]);
             }
-            this.aliases = laliases.toArray(new String[]{});
+            this.aliases = laliases.toArray(new String[] {});
         }
+        if (method.isAnnotationPresent(Require.class)) {
+            this.permission = method.getAnnotation(Require.class).value();
+            this.permissionMessage = method.getAnnotation(Require.class).message();
+        }
+
         this.registry = registry;
         this.method = method;
         this.senderType = senderType;
@@ -65,6 +66,13 @@ public class CommandHolder {
         return aliases;
     }
 
+    public String getPermission() {
+        return permission;
+    }
+
+    public String getPermissionMessage() {
+        return permissionMessage;
+    }
 
     public boolean isAnnotationPresent(Class<? extends Annotation> annotation) {
         boolean found = false;
@@ -81,17 +89,20 @@ public class CommandHolder {
     }
 
     public String getUsage() {
-        if (usage == null) usage = getName() + " " + new UsageBuilder(parameters).build();
+        if (usage == null)
+            usage = getName() + " " + new UsageBuilder(parameters).build();
         return usage;
     }
 
-    public boolean call(Object sender, Arguments arguments) {
+    public boolean call(Object sender, Arguments arguments) throws CommandInvocationException {
         if (senderType == null) {
             throw new IllegalArgumentException("Sender type is null!");
         }
         if (!senderType.isAssignableFrom(sender.getClass())) {
-            throw new IllegalArgumentException("Object provided is not assignable from the sender provided");
+            throw new IllegalArgumentException(
+                "Object provided is not assignable from the sender provided");
         }
+
         ParametricParser pParser = new ParametricParser(parameters);
         ParametricParser.ParsedResult parsedObj = pParser.parse(senderType.cast(sender), arguments);
         boolean isStatic = Modifier.isStatic(method.getModifiers());
@@ -105,7 +116,8 @@ public class CommandHolder {
                 method.invoke(null, parsedObj.getObjects());
                 return true;
             } catch (IllegalAccessException | InvocationTargetException e) {
-                return false;
+                e.printStackTrace();
+                throw new CommandInvocationException(e.getMessage());
             }
         } else {
             try {
@@ -113,7 +125,7 @@ public class CommandHolder {
                 method.invoke(instance, parsedObj.getObjects());
                 return true;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                return false;
+                throw new CommandInvocationException(e.getMessage());
             }
         }
     }

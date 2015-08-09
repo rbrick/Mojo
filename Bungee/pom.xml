@@ -9,8 +9,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>mojo-bungee</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>Mojo</artifactId>
+    <version>Bungee-1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>me.rbrickis</groupId>
             <artifactId>mojo-core</artifactId>
-            <version>${project.version}</version>
+            <version>Core-1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -59,6 +59,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

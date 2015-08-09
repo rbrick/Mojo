@@ -1,5 +1,6 @@
 package me.rbrickis.mojo.parametric;
 
+import me.rbrickis.mojo.annotations.As;
 import me.rbrickis.mojo.annotations.Default;
 import me.rbrickis.mojo.annotations.Text;
 
@@ -19,12 +20,19 @@ public class Parameter {
 
     private String name;
 
-    public Parameter(Class<?> type, Annotation[] annotations, ParametricRegistry registry, String name, int index) {
+    public Parameter(Class<?> type, Annotation[] annotations, ParametricRegistry registry,
+        int index) {
         this.type = type;
         this.annotations = Arrays.asList(annotations);
         this.registry = registry;
         this.index = index;
-        this.name = name;
+
+        if (isAnnotationPresent(As.class)) {
+            As as = (As) getAnnotation(As.class);
+            setName(as.value());
+        } else {
+            setName("arg" + getArgumentIndex());
+        }
     }
 
 
@@ -43,11 +51,12 @@ public class Parameter {
     }
 
     public Annotation getAnnotation(final Class<? extends Annotation> annotation) {
-        if (isAnnotationPresent(annotation)) {
-            return annotations.stream().filter((a) -> a.annotationType() == annotation)
-                    .findFirst().orElseThrow(() -> new IllegalArgumentException("Could not find annotation!"));
-        }
-        return null;
+        return annotations.stream().filter((a) -> a.annotationType() == annotation).findFirst()
+            .orElse(null);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getIndex() {
